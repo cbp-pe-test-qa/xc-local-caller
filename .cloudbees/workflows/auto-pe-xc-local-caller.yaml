@@ -1,0 +1,21 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: workflow
+name: auto-pe-xc-local-caller
+on:
+  workflow_dispatch:
+jobs:
+  call-reusable:
+    uses: cbp-pe-test-qa/xc-local-reusable/.cloudbees/workflows/auto-pe-xc-local-reusable.yaml@main
+  independent-job:
+    steps:
+      - name: independent-job
+        uses: docker://alpine:3.20
+        shell: sh
+        run: echo "independent-job"
+  post-call:
+    needs: call-reusable
+    steps:
+      - name: post-call
+        uses: docker://alpine:3.20
+        shell: sh
+        run: echo "post-call"
